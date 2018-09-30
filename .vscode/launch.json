@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - Person",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "Person",
+      "args": "",
+      "projectName": "hackernews-graphql-java"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - Hello",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "Hello",
+      "args": "",
+      "projectName": "hackernews-graphql-java"
+    }
+  ]
+}
