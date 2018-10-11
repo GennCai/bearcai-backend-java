@@ -1,5 +1,7 @@
-package com.howtographql.hackernews;
+package com.howtographql.hackernews.repositories;
 
+import com.howtographql.hackernews.Scalars;
+import com.howtographql.hackernews.models.Vote;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.bson.types.ObjectId;

@@ -1,5 +1,6 @@
-package com.howtographql.hackernews;
+package com.howtographql.hackernews.resolvers;
 
+import com.howtographql.hackernews.models.*;
 import com.coxautodev.graphql.tools.GraphQLResolver;
 
 public class SigninResolver implements GraphQLResolver<SigninPayload> {

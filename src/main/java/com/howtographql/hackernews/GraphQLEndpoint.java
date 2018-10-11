@@ -1,9 +1,14 @@
 package com.howtographql.hackernews;
 
 import com.coxautodev.graphql.tools.SchemaParser;
+import com.howtographql.hackernews.resolvers.*;
+import com.howtographql.hackernews.repositories.*;
+import com.howtographql.hackernews.exceptions.SanitizedError;
+import com.howtographql.hackernews.models.*;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
 import graphql.ExceptionWhileDataFetching;
@@ -12,6 +17,7 @@ import graphql.schema.GraphQLSchema;
 import graphql.servlet.SimpleGraphQLServlet;
 import io.leangen.graphql.GraphQLSchemaGenerator;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,16 +68,31 @@ public class GraphQLEndpoint extends SimpleGraphQLServlet {
                 .withOperationsFromSingletons(query, linkResolver, mutation) //register the beans
                 .generate(); //done :)
     } */
+
+    @Override
+    protected GraphQLContext createContext(Optional<HttpServletRequest> request,
+            Optional<HttpServletResponse> response) {
+        User user = request.map(req -> req.getHeader("Authorization")).filter(id -> !id.isEmpty())
+                .map(id -> id.replace("Bearer ", "")).map(userRepository::findById).orElse(null);
+
+        response.map(resp -> {
+            resp.setHeader("Access-Control-Allow-Origin", "*");
+            resp.setHeader("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+            resp.setHeader("Access-Control-Allow-Headers", "content-type,x-apollo-tracing");
+            resp.setHeader("Vary", "Access-Control-Request-Headers");
+            return resp;
+        });
+
+        return new AuthContext(user, request, response);
+    }
     
     @Override
-    protected GraphQLContext createContext(Optional<HttpServletRequest> request, Optional<HttpServletResponse> response) {
-        User user = request
-            .map(req -> req.getHeader("Authorization"))
-            .filter(id -> !id.isEmpty())
-            .map(id -> id.replace("Bearer ", ""))
-            .map(userRepository::findById)
-            .orElse(null);
-        return new AuthContext(user, request, response);
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+        resp.setHeader("Access-Control-Allow-Headers", "content-type,x-apollo-tracing");
+        resp.setHeader("Vary", "Access-Control-Request-Headers");
+        super.doOptions(req, resp);
     }
 
     @Override

@@ -1,6 +1,9 @@
-package com.howtographql.hackernews;
+package com.howtographql.hackernews.resolvers;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
+import com.howtographql.hackernews.models.Link;
+import com.howtographql.hackernews.models.User;
+import com.howtographql.hackernews.repositories.UserRepository;
 
 import io.leangen.graphql.annotations.GraphQLContext;
 import io.leangen.graphql.annotations.GraphQLQuery;

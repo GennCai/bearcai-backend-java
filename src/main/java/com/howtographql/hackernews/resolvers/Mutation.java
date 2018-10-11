@@ -1,10 +1,13 @@
-package com.howtographql.hackernews;
+package com.howtographql.hackernews.resolvers;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import com.coxautodev.graphql.tools.GraphQLRootResolver;
+import com.howtographql.hackernews.repositories.*;
+import com.howtographql.hackernews.AuthContext;
+import com.howtographql.hackernews.models.*;
 
 import graphql.GraphQLException;
 import graphql.schema.DataFetchingEnvironment;

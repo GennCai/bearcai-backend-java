@@ -1,4 +1,4 @@
-package com.howtographql.hackernews;
+package com.howtographql.hackernews.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import graphql.ExceptionWhileDataFetching;

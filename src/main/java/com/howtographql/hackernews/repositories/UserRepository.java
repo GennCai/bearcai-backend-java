@@ -1,5 +1,6 @@
-package com.howtographql.hackernews;
+package com.howtographql.hackernews.repositories;
 
+import com.howtographql.hackernews.models.User;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.bson.types.ObjectId;

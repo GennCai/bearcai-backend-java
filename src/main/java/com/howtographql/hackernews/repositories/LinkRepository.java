@@ -1,9 +1,11 @@
-package com.howtographql.hackernews;
+package com.howtographql.hackernews.repositories;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.howtographql.hackernews.models.Link;
+import com.howtographql.hackernews.models.LinkFilter;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;

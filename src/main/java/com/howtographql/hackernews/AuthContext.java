@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.howtographql.hackernews.models.User;
+
 import graphql.servlet.GraphQLContext;
 
 public class AuthContext extends GraphQLContext {
