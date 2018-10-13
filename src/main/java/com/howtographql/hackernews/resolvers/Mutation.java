@@ -33,8 +33,7 @@ public class Mutation implements GraphQLRootResolver{
       AuthContext context = env.getContext();
       String userId = context.getUser() != null ? context.getUser().getId() : null;
       Link newLink = new Link(url, description, userId, null);
-      linkRepository.saveLink(newLink);
-      return newLink;
+      return linkRepository.saveLink(newLink);
   }
   
   public SigninPayload createUser(String name, AuthData auth) {

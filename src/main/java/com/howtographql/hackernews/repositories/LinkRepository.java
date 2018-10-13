@@ -60,12 +60,14 @@ public class LinkRepository {
         return descriptionCondition != null ? descriptionCondition : urlCondition;  
     }
     
-    public void saveLink(Link link) {
+    public Link saveLink(Link link) {
         Document doc = new Document();
         doc.append("url", link.getUrl());
         doc.append("description", link.getDescription());
         doc.append("postedBy", link.getUserId());
         links.insertOne(doc);
+        return link(doc);
+
     }
     
     private Link link(Document doc) {
