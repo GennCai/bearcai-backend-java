@@ -31,17 +31,21 @@ public class Mutation implements GraphQLRootResolver{
   // public Link createLink(String url, String description, @GraphQLRootContext AuthContext context) {
   public Link createLink(String url, String description, DataFetchingEnvironment env) {
       AuthContext context = env.getContext();
-      Link newLink = new Link(url, description, context.getUser().getId());
+      String userId = context.getUser() != null ? context.getUser().getId() : null;
+      Link newLink = new Link(url, description, userId, null);
       linkRepository.saveLink(newLink);
       return newLink;
   }
   
-  public User createUser(String name, AuthData auth) {
+  public SigninPayload createUser(String name, AuthData auth) {
     User newUser = new User(name, auth.getEmail(), auth.getPassword());
-    return userRepository.saveUser(newUser);
+    User user  = userRepository.saveUser(newUser);
+    return new SigninPayload(user.getId(), user);
   }
 
-  public Vote createVote(String linkId, String userId) {
+  public Vote createVote(String linkId, DataFetchingEnvironment env) {
+    AuthContext context = env.getContext();
+    String userId = context.getUser() != null ? context.getUser().getId() : null;
     ZonedDateTime now = Instant.now().atZone(ZoneOffset.UTC);
     return voteRepository.saveVote(new Vote(now, userId, linkId));
   }
@@ -52,5 +56,5 @@ public class Mutation implements GraphQLRootResolver{
         return new SigninPayload(user.getId(), user);
     }
     throw new GraphQLException("Invalid credentials");
-}
+  }
 }

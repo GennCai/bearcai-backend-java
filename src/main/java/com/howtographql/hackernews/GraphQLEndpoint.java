@@ -38,9 +38,9 @@ public class GraphQLEndpoint extends SimpleGraphQLServlet {
         //Change to `new MongoClient("mongodb://<host>:<port>/hackernews")`
         //if you don't have Mongo running locally on port 27017
         MongoDatabase mongo = new MongoClient().getDatabase("hackernews");
-        linkRepository = new LinkRepository(mongo.getCollection("links"));
-        userRepository = new UserRepository(mongo.getCollection("users"));
         voteRepository = new VoteRepository(mongo.getCollection("votes"));
+        linkRepository = new LinkRepository(mongo.getCollection("links"), voteRepository);
+        userRepository = new UserRepository(mongo.getCollection("users"));
     }
     public GraphQLEndpoint() {
         super(buildSchema());
@@ -78,8 +78,7 @@ public class GraphQLEndpoint extends SimpleGraphQLServlet {
         response.map(resp -> {
             resp.setHeader("Access-Control-Allow-Origin", "*");
             resp.setHeader("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-            resp.setHeader("Access-Control-Allow-Headers", "content-type,x-apollo-tracing");
-            resp.setHeader("Vary", "Access-Control-Request-Headers");
+            resp.setHeader("Access-Control-Allow-Headers", "content-type,x-apollo-tracing,authorization");
             return resp;
         });
 
@@ -90,8 +89,7 @@ public class GraphQLEndpoint extends SimpleGraphQLServlet {
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
-        resp.setHeader("Access-Control-Allow-Headers", "content-type,x-apollo-tracing");
-        resp.setHeader("Vary", "Access-Control-Request-Headers");
+        resp.setHeader("Access-Control-Allow-Headers", "content-type,x-apollo-tracing,authorization");
         super.doOptions(req, resp);
     }
 

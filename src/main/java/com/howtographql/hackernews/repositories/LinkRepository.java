@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.howtographql.hackernews.models.Link;
 import com.howtographql.hackernews.models.LinkFilter;
+import com.howtographql.hackernews.models.Vote;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
@@ -19,9 +20,11 @@ import static com.mongodb.client.model.Filters.regex;
 public class LinkRepository {
     
     private final MongoCollection<Document> links;
+    private final VoteRepository voteRepository;
 
-    public LinkRepository(MongoCollection<Document> links) {
+    public LinkRepository(MongoCollection<Document> links, VoteRepository voteRepository) {
         this.links = links;
+        this.voteRepository = voteRepository;
     }
 
     public Link findById(String id) {
@@ -66,10 +69,14 @@ public class LinkRepository {
     }
     
     private Link link(Document doc) {
+        String linkId = doc.get("_id").toString();
+        List<Vote> votes = voteRepository.findByLinkId(linkId);
         return new Link(
-                doc.get("_id").toString(),
+                linkId,
                 doc.getString("url"),
                 doc.getString("description"),
-                doc.getString("postedBy"));
+                doc.getString("postedBy"),
+                votes
+                );
     }
 }
