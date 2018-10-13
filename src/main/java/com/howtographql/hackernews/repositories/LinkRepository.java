@@ -69,6 +69,12 @@ public class LinkRepository {
         return link(doc);
 
     }
+
+    // public Link deleteLink(String linkId) {
+    //     Link link = findById(linkId);
+    //     links.deleteOne(eq("_id", new ObjectId(linkId)));
+    //     return link;
+    // }
     
     private Link link(Document doc) {
         String linkId = doc.get("_id").toString();

@@ -36,6 +36,10 @@ public class Mutation implements GraphQLRootResolver{
       return linkRepository.saveLink(newLink);
   }
   
+  // public Link deleteLink(String linkId) {
+  //   return linkRepository.deleteLink(linkId);
+  // }
+  
   public SigninPayload createUser(String name, AuthData auth) {
     User newUser = new User(name, auth.getEmail(), auth.getPassword());
     User user  = userRepository.saveUser(newUser);

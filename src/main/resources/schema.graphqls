@@ -13,6 +13,7 @@ type Mutation {
   createLink(url: String!, description: String!): Link
   signinUser(auth: AuthData): SigninPayload
   createVote(linkId: ID): Vote
+  # deleteLink(linkId: ID): Link
 }
 
 type Link {
