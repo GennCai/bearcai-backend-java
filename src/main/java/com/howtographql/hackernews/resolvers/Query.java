@@ -24,6 +24,11 @@ public class Query implements GraphQLRootResolver{
     public List<Link> allLinks(LinkFilter filter, Number skip, Number first) {
         return linkRepository.getAllLinks(filter, skip.intValue(), first.intValue());
     }
+
+    
+    public Feed feed(LinkFilter filter, Number skip, Number first) {
+        return linkRepository.getFeed(filter, skip.intValue(), first.intValue());
+    }
   
     public List<User> allUsers() {
         return userRepository.getAllUsers();

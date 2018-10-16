@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.howtographql.hackernews.models.Feed;
 import com.howtographql.hackernews.models.Link;
 import com.howtographql.hackernews.models.LinkFilter;
 import com.howtographql.hackernews.models.Vote;
@@ -15,6 +16,7 @@ import org.bson.types.ObjectId;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.or;
 import static com.mongodb.client.model.Filters.regex;
 
 public class LinkRepository {
@@ -42,6 +44,10 @@ public class LinkRepository {
         return allLinks;
     }
 
+    public Feed getFeed(LinkFilter filter, int skip, int first) {
+        return new Feed(getAllLinks(filter, skip, first), links.count());
+    }
+
     private Bson buildFilter(LinkFilter filter) {
         String descriptionPattern = filter.getDescriptionContains();
         String urlPattern = filter.getUrlContains();
@@ -55,7 +61,7 @@ public class LinkRepository {
             urlCondition = regex("url", ".*" + urlPattern + ".*", "i");
         }
         if (descriptionCondition != null && urlCondition != null) {
-            return and(descriptionCondition, urlCondition);
+            return or(descriptionCondition, urlCondition);
         }
         return descriptionCondition != null ? descriptionCondition : urlCondition;  
     }
